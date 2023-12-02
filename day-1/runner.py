@@ -8,7 +8,6 @@ def write_file_contents(file_path: str, contents: list[str]):
             file.write(line + "\n")
 
 def run_solution(
-        input_file_name,
         output_file_name, 
         solution_function
     ):

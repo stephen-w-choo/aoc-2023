@@ -31,9 +31,7 @@ def turn_calibration_value_to_number(calibration_val: str) -> int:
     last_int = None
 
     for i in range(len(calibration_val)):
-        print(calibration_val)
         number = check_index_for_number(calibration_val, i)
-        print(number)
         if (number):
             if not first_int:
                 first_int = number
