@@ -1,9 +1,20 @@
 import os
 import sys
 
+from src import python_runner_template
+
 NAMING_TEMPLATE = "day-"
+PYTHON_TEMPLATE_FILE = "src/python_template.py"
+PYTHON_RUNNER_FILE = "src/python_runner_template.py"
 
 # Make a directory for a given number
+
+def read_template_file(template_path: str) -> str:
+    # Read the template file
+    with open(template_path, 'r') as file:
+        template_content = file.read()
+        return template_content
+
 
 def make_directory(directory_name: str):
     """
@@ -17,18 +28,26 @@ def generate_files(directory_name: str):
     """
     # Make the files
     file_names = [
+        "test-input1.txt",
+        "test-input2.txt",
         "prompt1.txt", 
         "prompt2.txt", 
-        "input1.txt", 
-        "input2.txt",
+        "input.txt", 
         "solution1.py",    
-        "solution2.py"
+        "solution2.py",
+        "runner.py"
     ]
+
+    
+    python_template = read_template_file(PYTHON_TEMPLATE_FILE)
+    python_runner_template = read_template_file(PYTHON_RUNNER_FILE)
+
     for file_name in file_names:
         with open(f"{directory_name}/{file_name}", "w") as file:
             if file_name.startswith("solution"):
-                file.write("def solution(input: list[str]) -> str:\n")
-                file.write("    pass\n")
+                file.write(python_template)
+            elif file_name.startswith("runner"): 
+                file.write(python_runner_template)
             else:
                 file.write("")
 
