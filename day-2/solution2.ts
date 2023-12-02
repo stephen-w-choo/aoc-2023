@@ -19,8 +19,6 @@ function solution(input: string) {
         }
         res += maxRed * maxBlue * maxGreen
     }
-    console.log(res)
-
     return res.toString()
 }
 

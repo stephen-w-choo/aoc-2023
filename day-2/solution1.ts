@@ -31,12 +31,10 @@ function solution(input: string): string {
                 isGamePossible = false
             }
         })
-
         if (isGamePossible) {
             res += gameIndex + 1
         }
     })
-
     return res.toString()
 }
 

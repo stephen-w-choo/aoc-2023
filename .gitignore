@@ -1,1 +1,8 @@
+# Ignore for Python
 __pycache__/
+
+# Ignore for Bun/TS
+node_modules/
+tsconfig.json
+package.json
+bun.lockb
