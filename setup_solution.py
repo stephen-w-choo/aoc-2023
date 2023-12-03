@@ -2,12 +2,20 @@ import os
 import sys
 
 NAMING_TEMPLATE = "day-"
+LANGUAGE_NAMING_TEMPLATE = {
+    "py": "python",
+    "ts": "typescript",
+    "kt": "kotlin"
+}
+
 PYTHON_TEMPLATE_FOLDER = "src/python_templates/"
 PYTHON_TEMPLATE_FILE = "python_template.py"
 PYTHON_RUNNER_FILE = "python_runner_template.py"
 TS_TEMPLATE_FOLDER = "src/ts_templates/"
 TS_TEMPLATE_FILE = "ts_template.ts"
 TS_COMMON_FILE = "ts_common_template.ts"
+KT_TEMPLATE_FOLDER = "src/kt_templates/"
+KT_TEMPLATE_FILE = "kt_template.kts"
 
 # Make a directory for a given number
 
@@ -68,16 +76,36 @@ def generate_files_ts(directory_name: str):
             else:
                 file.write("")
 
+def generate_files_kotlin(directory_name: str):
+    # Make the files
+    file_names = [
+        "input.txt",
+        "prompt.txt", 
+        "solution1.kts",    
+        "solution2.kts",
+    ]
+    
+    kt_template = read_template_file(KT_TEMPLATE_FOLDER + KT_TEMPLATE_FILE)
+
+    for file_name in file_names:
+        with open(f"{directory_name}/{file_name}", "w") as file:
+            if file_name.startswith("solution"):
+                file.write(kt_template)
+            else:
+                file.write("")
+
 def setup_solution(day_number: str, language: str):
     """
     Sets up a solution for a given day number
     """
-    directory_name = f"{NAMING_TEMPLATE}{day_number}"
+    directory_name = f"{NAMING_TEMPLATE}{day_number}-{LANGUAGE_NAMING_TEMPLATE[language]}"
     make_directory(directory_name)
     if language == "py":
         generate_files_python(directory_name)
     if language == "ts":
         generate_files_ts(directory_name)
+    if language == "kt":
+        generate_files_kotlin(directory_name)
 
 if __name__ == "__main__":
     # Get the input file name

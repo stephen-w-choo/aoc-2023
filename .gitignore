@@ -6,3 +6,9 @@ node_modules/
 tsconfig.json
 package.json
 bun.lockb
+
+# Ignore Gradle 
+.gradle
+gradlew
+gradlew.bat
+build
