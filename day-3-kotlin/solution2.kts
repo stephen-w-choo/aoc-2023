@@ -4,18 +4,14 @@ fun getNumberAtCoords(schematic: List<List<String>>, coord: Pair<Int, Int>): Int
     // Move left until no number is found
     var y = coord.first
     var x = coord.second
-
     while (x > 0 && schematic[y][x - 1].first().isDigit()) {
         x -= 1
     }
-
     var number = ""
-
     while (x < schematic[0].size && schematic[y][x].first().isDigit()) {
         number += schematic[y][x].first()
         x += 1
     }
-
     return number.toInt()
 }
 
@@ -31,9 +27,7 @@ fun checkAdjacentsForNumbers(position: Pair<Int, Int>, schematic: List<List<Stri
         Pair(1, 0),
         Pair(1, 1)
     )
-
     val numbers = mutableSetOf<Int>()
-
     for (adjacent in adjacents) {
         val newPosition = Pair(position.first + adjacent.first, position.second + adjacent.second)
         if (schematic[newPosition.first][newPosition.second].first().isDigit()) {
@@ -62,19 +56,14 @@ fun solution(input: String): String {
             }
         }
     }
-
     // Iterate through the gears
     for (gearPosition in gearPositions) {
         val numbers = mutableSetOf<Int>()
-
         val gearNumbers = checkAdjacentsForNumbers(gearPosition, schematic).toList()
-        println(gearNumbers)
         if (gearNumbers.size == 2) {
             res += gearNumbers[0] * gearNumbers[1]
         }
     }
-
-
     return res.toString()
 }
 
