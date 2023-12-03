@@ -9,12 +9,9 @@ const MAX_ROUND = {
 }
 
 function checkifRoundIsPossible(currentRound: Round, expectedRound: Round): Boolean {
-    if (currentRound.green > expectedRound.green ||
+    return !(currentRound.green > expectedRound.green ||
         currentRound.red > expectedRound.red ||
-        currentRound.blue > expectedRound.blue) {
-            return false
-        }
-    return true
+        currentRound.blue > expectedRound.blue)
 }
 
 function solution(input: string): string {
