@@ -35,7 +35,8 @@ def make_directory(directory_name: str):
 def generate_files_python(directory_name: str):
     # Make the files
     file_names = [
-        "input.txt"
+        "input.txt",
+        "test-input.txt",
         "prompt.txt", 
         "solution1.py",    
         "solution2.py",
@@ -58,6 +59,7 @@ def generate_files_ts(directory_name: str):
     # Make the files
     file_names = [
         "input.txt",
+        "test-input.txt",
         "prompt.txt", 
         "solution1.ts",    
         "solution2.ts",
@@ -80,6 +82,7 @@ def generate_files_kotlin(directory_name: str):
     # Make the files
     file_names = [
         "input.txt",
+        "test-input.txt",
         "prompt.txt", 
         "solution1.kts",    
         "solution2.kts",
