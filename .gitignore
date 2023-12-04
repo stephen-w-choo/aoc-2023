@@ -13,3 +13,5 @@ gradlew
 gradlew.bat
 build
 .idea
+
+.env
