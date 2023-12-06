@@ -13,5 +13,8 @@ gradlew
 gradlew.bat
 build
 .idea
+build.gradle.kts
+settings.gradle.kts
+gradle/
 
 .env
