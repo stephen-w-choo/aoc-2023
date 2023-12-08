@@ -1,0 +1,13 @@
+PART 2 notes and random scribblings
+
+Each node will have a journey which will eventually loop
+
+That loop may or may not include the original starting node. In theory, it may not even include an ending node either, although for the sake of the problem being possible I will assume it does.
+
+Things we need to know:
+    For each node - where and when does it start to loop 
+        Store each journey in a set of nodes visited, and when you encounter the node in the set, you've reached the start of the loop - wipe the set, note the 
+    How asymmetric each loop is - the loops will eventually show a pattern, but each loop is not guaranteed to have the same N - may end up with a loop size of 10, 15, 10, 15 repeating
+
+
+Ignore all this - they've given us closed loops for all of them - makes it much easier (albeit feels a bit fake)
