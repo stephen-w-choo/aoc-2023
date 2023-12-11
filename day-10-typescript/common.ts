@@ -29,7 +29,6 @@ export function parseInput(input: string): string[][] {
 
 export function getNextDirection(pipe: string, currentDirection: Direction): Direction | null {
     const directions = PIPE_MAPPER[pipe]
-    console.log(pipe)
     if (currentDirection == directions[0]) return directions[1]
     if (currentDirection == directions[1]) return directions[0]
     return null

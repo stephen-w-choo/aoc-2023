@@ -5,57 +5,61 @@ import {
     DIRECTION_MAPPER,
     getNextDirection,
     invertDirection,
-    runSolution 
+    runSolution, 
+    PIPE_MAPPER
 } from './common'
 
 const INPUT_FILE_PATH = 'input.txt'
 const ADJACENTS = Object.values(DIRECTION_MAPPER)
+const PIPES = Object.keys(PIPE_MAPPER)
 
-function spaceFiller(
-    grid: string[][],
-    spaceOutside: [number],
-    currentPoint: [number, number]
-) {
-    let [y, x] = currentPoint
-    let currentTerrain = grid[y][x]
-
-    if (currentTerrain == "O" || currentTerrain == "X") {
-        return
-    }
-
-    currentTerrain == "O"
-
+function tupleHash(tuple: [number, number]): string {
+    return tuple[0].toString() + "///" + tuple[1].toString()
 }
 
-function markBoundary(
-    previousDirection: Direction, 
-    currentPoint: [number, number], 
-    currentStep: number,
-    grid: string[][],  
-): number {
+function unhashTuple(hash: string): [number, number] {
+    const parts = hash.split("///");
+    return [parseInt(parts[0], 10), parseInt(parts[1], 10)];
+}
+
+function getInsideTile(currentTile: [number, number], previousDirection: Direction, nextDirection: Direction): [number, number][] | null {
+    let [y, x] = currentTile
+    // if going clockwise and on a straight tile, returns the inside tile to check
+    if (previousDirection == "E" && nextDirection == "W") return [[y - 1, x]] 
+    if (previousDirection == "W" && nextDirection == "E") return [[y + 1, x]] 
+    if (previousDirection == "S" && nextDirection == "N") return [[y, x + 1]]
+    if (previousDirection == "N" && nextDirection == "S") return [[y, x - 1]]
+    // if going clockwise and on a curved tile, returns the 2 inside tiles to check
+    if (previousDirection == "S" && nextDirection == "W") return [[y - 1, x], [y, x + 1]]
+    if (previousDirection == "W" && nextDirection == "N") return [[y + 1, x], [y, x + 1]]
+    if (previousDirection == "N" && nextDirection == "E") return [[y + 1, x], [y, x - 1]]
+    if (previousDirection == "E" && nextDirection == "S") return [[y - 1, x], [y, x - 1]]
+    return null
+}
+
+function spaceFiller(
+    currentPoint: [number, number],
+    boundary: Set<string>,
+    seen: Set<string>,
+    spaceOutside: [number]
+) {
     let [y, x] = currentPoint
-    let currentTerrain = grid[y][x]
-    grid[y][x] = "X"
 
-    if (currentTerrain == "." || currentTerrain == "X" || currentTerrain == "S") {
-        return currentStep
+    if (boundary.has(tupleHash(currentPoint))) return
+    if (seen.has(tupleHash(currentPoint))) return
+
+    seen.add(tupleHash(currentPoint))
+
+    spaceOutside[0] += 1
+
+    for (let adjacent of ADJACENTS) {
+        spaceFiller(
+            [y + adjacent[0], x + adjacent[1]],
+            boundary,
+            seen,
+            spaceOutside,
+        )
     }
-
-    if (typeof currentTerrain == "string") {
-        let nextDirection = getNextDirection(currentTerrain, previousDirection)
-        if (nextDirection) {
-            let nextPoint: [number, number] = 
-                [currentPoint[0] + DIRECTION_MAPPER[nextDirection][0], currentPoint[1] + DIRECTION_MAPPER[nextDirection][1]]        
-            markBoundary(
-                invertDirection(nextDirection),
-                nextPoint,
-                currentStep + 1,
-                grid,
-            )
-        }
-    }
-
-    return currentStep
 }
 
 function solution(input: string) {
@@ -76,30 +80,64 @@ function solution(input: string) {
         }
     }
 
-
     let adjacentDirections = DIRECTION_MAPPER
-    let loopSize = 0
+    let pointsOnLoop = new Set<string>
+    let pointsInsideLoop = new Set<string>
+    let seen = new Set<string>
+    const spaceOutside: [number] = [0]
 
-    // encircle
-    for (let adjacentDirection in adjacentDirections) {
-        let adjacent = adjacentDirections[adjacentDirection as Direction]
-        let currentPoint = [startPoint!![0] + adjacent[0], startPoint!![1] + adjacent[1]]
-        let maxSteps = markBoundary(
-            invertDirection(adjacentDirection as Direction),
-            currentPoint as [number, number],
-            1,
-            grid,
-        )
-        Math.max(loopSize, maxSteps)
+    const DIRECTION = "N"
+
+    // get the boundary and the inner tile points
+    let adjacent = adjacentDirections[DIRECTION]
+    let currentPoint: [number, number] = [startPoint!![0] + adjacent[0], startPoint!![1] + adjacent[1]]
+    let previousDirection = invertDirection(DIRECTION)
+    
+    while (true) {
+        let [y, x] = currentPoint;
+        let currentTerrain = grid[y][x];
+        
+        if (pointsOnLoop.has(tupleHash(currentPoint))) break
+
+        pointsOnLoop.add(tupleHash(currentPoint));
+
+        if (currentTerrain === "." || currentTerrain === "X" || currentTerrain === "S") {
+            break; // Exit condition
+        }
+
+        if (typeof currentTerrain === "string") {
+            let nextDirection = getNextDirection(currentTerrain, previousDirection);
+
+            if (nextDirection) {
+                let insideTiles = getInsideTile(currentPoint, previousDirection, nextDirection);
+                if (insideTiles) {
+                    insideTiles.forEach(insideTile => {
+                        pointsInsideLoop.add(tupleHash(insideTile));
+                    });
+                }
+                // Update the currentPoint and previousDirection for the next iteration
+                currentPoint = [y + DIRECTION_MAPPER[nextDirection][0], x + DIRECTION_MAPPER[nextDirection][1]];
+                previousDirection = invertDirection(nextDirection);
+            } else {
+                break; // No next direction, exit the loop
+            }
+        }
     }
 
-    debug(grid)
+    // fill the space based on the points inside the loop
+    pointsInsideLoop.forEach((hashedPoint) => {
+        let point = unhashTuple(hashedPoint)
+        spaceFiller(
+            point,
+            pointsOnLoop,
+            seen,
+            spaceOutside
+        )
+    })
 
-    const spaceOutside = [0]
-    // fill the space outside of the loop
 
 
-    return ""
+    return spaceOutside.toString()
 }
 
 runSolution(INPUT_FILE_PATH, solution)
