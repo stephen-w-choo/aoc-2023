@@ -1,0 +1,10 @@
+Thoughts:
+
+This is a recursive DFS with pruning
+
+Each time we assign encounter a ?
+
+We assign either a . or #
+We then check if its still consistent - if it is, we spawn another process.
+
+If it is not, we stop
