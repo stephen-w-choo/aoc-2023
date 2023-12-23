@@ -96,6 +96,8 @@ function solution(input: string) {
         }
         console.log(`${i}, ${tallyLoad(grid)}`)
     }
+
+    // look for cycles
 }
 
 runSolution(INPUT_FILE_PATH, solution)
