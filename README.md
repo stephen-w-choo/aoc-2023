@@ -22,17 +22,17 @@ The Kotlin templates will generate a .kts Kotlin scripting file, rather than a s
  - [x] Day 4 - Python
  - [x] Day 5 - TypeScript
  - [x] Day 6 - Kotlin
- - [x] Day 7 - TypeScript
- - [x] Day 8 - TypeScript
- - [x] Day 9 - TypeScript
- - [x] Day 10 - TypeScript
- - [x] Day 11 - TypeScript
- - [ ] Day 12 
- - [ ] Day 13 
- - [ ] Day 14
+ - [x] Day 7 - TypeScript   
+ - [x] Day 8 - TypeScript   
+ - [x] Day 9 - TypeScript    <---------- (The five day streak in TS was because I needed to practice TS for an interview)
+ - [x] Day 10 - TypeScript  
+ - [x] Day 11 - TypeScript  
+ - [x] Day 12 - Python - part 1 only - I have not missed dynamic programming
+ - [x] Day 13 - Kotlin - part 1 only
+ - [x] Day 14 - TypeScript
  - [x] Day 15 - Kotlin
  - [x] Day 16 - Python
- - [ ] Day 17
+ - [ ] Day 17 - TypeScript - oh god I've forgotten Djikstra's
  - [ ] Day 18 
  - [ ] Day 19 
  - [ ] Day 20 
