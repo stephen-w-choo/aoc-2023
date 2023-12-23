@@ -14,7 +14,6 @@ The TypeScript templates use the Bun runtime, so you'll need that installed if y
 The Kotlin templates will generate a .kts Kotlin scripting file, rather than a standard .kt - it can be run without needing to compile first
 
 ## Current progress
-(The five day TypeScript streak in the middle is because I had a technical interview come up in that language)
 
  - [x] Day 1 - Python
  - [x] Day 2 - TypeScript
