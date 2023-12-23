@@ -14,5 +14,6 @@ def run_solution(output_file_name, solution_function: callable): # type: ignore
     input_data = read_file_contents(input_file)
     solution_output = solution_function(input_data)
 
-    write_file_contents(output_file, solution_output)
-    print(f"Output written to {output_file}")
+    # uncomment if you need to print the debug output to a file for whatever reason
+    # write_file_contents(output_file, solution_output)
+    print(solution_output)
