@@ -1,11 +1,29 @@
 import java.io.File
 import kotlin.math.min
 
+enum class SymmetryType {
+    MATCH,
+    ONE_DEFECT,
+    NON_MATCHED
+}
+
 fun debug(grid: List<List<Char>>) {
     grid.forEach { line ->
         line.forEach { char -> print(char)}
         print("\n")
     }
+}
+
+fun checkSymmetry(lineA: List<Char>, lineB: List<Char>): SymmetryType {
+    var defect = false
+    for (i in lineA.indices) {
+        if (lineA[i] != lineB[i]) {
+            if (defect) return SymmetryType.NON_MATCHED
+            defect = true
+        }
+    }
+    if (defect) return SymmetryType.ONE_DEFECT
+    return SymmetryType.MATCH
 }
 
 fun parseInput(input: String): List<List<List<Char>>> {
@@ -33,12 +51,22 @@ fun getSymmetryWithOneDefect(grid: List<List<Char>>): Int? {
             val lineA = grid[i - j]
             val lineB = grid[i + j + 1]
 
-            if (lineA != lineB) {
-                symmetrical = false
-                break
+            when (checkSymmetry(lineA, lineB)) {
+                SymmetryType.NON_MATCHED -> {
+                    symmetrical = false
+                    break
+                }
+                SymmetryType.ONE_DEFECT -> {
+                    defect += 1
+                    if (defect >= 2) {
+                        symmetrical = false
+                        break
+                    }
+                }
+                SymmetryType.MATCH -> continue
             }
         }
-        if (symmetrical) {
+        if (symmetrical && defect == 1) {
             return i + 1
         }
     }
@@ -75,8 +103,8 @@ fun solution(input: String): String {
     var res = 0
 
     for (grid in grids) {
-        res += 100 * intOrZero(getLineOfHorizontalSymmetry(grid))
-        res += intOrZero(getLineOfHorizontalSymmetry(transposeGrid(grid)))
+        res += 100 * intOrZero(getSymmetryWithOneDefect(grid))
+        res += intOrZero(getSymmetryWithOneDefect(transposeGrid(grid)))
     }
 
     return res.toString()
