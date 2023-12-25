@@ -1,6 +1,5 @@
 import { runSolution } from './common'
-
-const queue: Heap
+import { PriorityQueue, Queue } from 'tstl';
 
 const INPUT_FILE_PATH = 'input.txt'
 
@@ -14,21 +13,48 @@ const directions: Array<Direction> = [
     [0, 1], // East
 ]
 
-function tupleHash(tuple: [number, number]): string {
-    return tuple[0].toString() + "///" + tuple[1].toString()
-}
-
-function unhashTuple(hash: string): [number, number] {
-    const parts = hash.split("///");
-    return [parseInt(parts[0], 10), parseInt(parts[1], 10)];
-}
-
 function solution(input: string) {
-    const grid = input.split("\n")
-        .map((line) => line.split(""))
+    // implementing Djikstra's in TypeScript has been absolutely awful and I never want to do it again
+    // If I'm doing DSA like this I'm either going back to Python or learning C++
+    const INPUT_FILE_PATH = 'input.txt'
 
+    type Route = [Direction?, Direction?, Direction?]
+    type Direction = [0, 1] | [1, 0] | [-1, 0] | [0, -1]
 
-    const distances: Record<string, [number, Route]>
+    const directions: Array<Direction> = [
+        [-1, 0], // North
+        [1, 0], // South
+        [0, -1], // West
+        [0, 1], // East
+    ]
+
+    function solution(input: string) {
+        const grid = input.split("\n")
+            .map((line) => line.split(""))
+
+        const hashedStartPoint = JSON.stringify([0, 0])
+        const distances: Record<string, number> = { 
+            initialKey: 0
+        }
+
+        const visited: Set<string> = new Set([hashedStartPoint])
+
+        const queue: Queue<string> = new Queue<string>()
+        queue.push(hashedStartPoint)
+
+        grid.forEach((row, yIndex) => {
+            row.forEach((_, xIndex) => {
+                let hashedPoint = JSON.stringify([yIndex, xIndex])
+                distances[hashedPoint] = Infinity
+                visited.add(hashedPoint)
+            })
+        })
+
+        while (queue.size() > 0) {
+            let hashedCurrentPoint = JSON.parse(queue.front())
+            queue.pop()
+        }
+    }
         
     // I know Djikstra's is a DFS that involves a kind of priority queue
     // But I don't know the exact algorithm
